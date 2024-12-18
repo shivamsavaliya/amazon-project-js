@@ -1,8 +1,10 @@
-import { cart, removeCartItem } from "../data/cart.js";
+import { cart, itemCount, removeCartItem } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
 let cartProductHTML = '';
+
+itemCount();
 
 cart.forEach(
     (cartItem) => {
@@ -15,7 +17,7 @@ cart.forEach(
         });
         cartProductHTML +=
             `
-            <div class="cart-item-container">
+            <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
                 <div class="delivery-date">
                 Delivery date: ${Date.now()}
                 </div>
@@ -86,7 +88,6 @@ cart.forEach(
         `;
     }
 );
-document.querySelector('.js-cart-item-count').innerHTML = cart.length;
 
 document.querySelector('.js-order-summery').innerHTML = cartProductHTML;
 
@@ -95,6 +96,8 @@ document.querySelectorAll('.js-delete-link')
         link.addEventListener('click', () => {
             const productId = link.dataset.productId;
             removeCartItem(productId);
+            document.querySelector(`.js-cart-item-container-${productId}`).remove();
+            itemCount();
         });
     });
 

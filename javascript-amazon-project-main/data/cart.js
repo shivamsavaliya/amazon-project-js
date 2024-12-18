@@ -37,3 +37,7 @@ export function removeCartItem(productId) {
     });
     cart = newCart;
 }
+
+export function itemCount() {
+    document.querySelector('.js-cart-item-count').innerHTML = cart.length;
+}
