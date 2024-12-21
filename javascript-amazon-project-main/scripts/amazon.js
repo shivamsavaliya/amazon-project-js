@@ -66,5 +66,6 @@ document.querySelectorAll('.js-add-to-cart')
       addToCart(productId);
     });
   });
+document.querySelector('.js-cart-quantity').innerHTML = itemCount() || 0;
 
 

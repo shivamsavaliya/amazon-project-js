@@ -4,13 +4,11 @@ import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 
-let date = dayjs();
-let dateFormat = date.format('dddd, MMMM D');
-
 let cartProductHTML = '';
+let paymentSummary = '';
+let productPrice = [];
 
 document.querySelector('.js-cart-item-count').innerHTML = itemCount();
-
 
 cart.forEach(
     (cartItem) => {
@@ -19,9 +17,10 @@ cart.forEach(
         products.forEach((product) => {
             if (product.id === productId) {
                 matchingProduct = product;
+                productPrice.push(formatCurrency(product.priceCents * cartItem.quantity));
             }
-        });
 
+        });
         const deliveryOptionId = cartItem.deliveryOptionId;
         let deliveryOption;
 
@@ -102,7 +101,7 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
     return html;
 }
 
-document.querySelector('.js-order-summery').innerHTML = cartProductHTML;
+document.querySelector('.js-order-summary').innerHTML = cartProductHTML;
 
 document.querySelectorAll('.js-delete-link')
     .forEach((link) => {
@@ -110,10 +109,52 @@ document.querySelectorAll('.js-delete-link')
             const productId = link.dataset.productId;
             removeCartItem(productId);
             document.querySelector(`.js-cart-item-container-${productId}`).remove();
-            document.querySelector('.js-cart-quantity').innerHTML = itemCount();
-
+            document.querySelector('.js-cart-item-count').innerHTML = itemCount() || 0;
         });
-        document.querySelector('.js-cart-item-count').innerHTML = itemCount() || 0;
     });
 
+let cartQuantity;
 
+cart.forEach(cartItem => {
+    cartQuantity = cartItem.quantity;
+});
+
+console.log('productprice :>> ', productPrice);
+
+paymentSummary =
+    `
+            <div class="payment-summary-title">
+              Order Summary
+            </div>
+    
+            <div class="payment-summary-row">
+              <div>Items (${cartQuantity || 0}):</div>
+              <div class="payment-summary-money">$42.75</div>
+            </div>
+    
+            <div class="payment-summary-row">
+              <div>Shipping &amp; handling:</div>
+              <div class="payment-summary-money">$4.99</div>
+            </div>
+    
+            <div class="payment-summary-row subtotal-row">
+              <div>Total before tax:</div>
+              <div class="payment-summary-money">$47.74</div>
+            </div>
+    
+            <div class="payment-summary-row">
+              <div>Estimated tax (10%):</div>
+              <div class="payment-summary-money">$4.77</div>
+            </div>
+    
+            <div class="payment-summary-row total-row">
+              <div>Order total:</div>
+              <div class="payment-summary-money">$52.51</div>
+            </div>
+    
+            <button class="place-order-button button-primary">
+              Place your order
+            </button>
+    `;
+
+document.querySelector('.js-payment-summary').innerHTML = paymentSummary;
