@@ -1,4 +1,3 @@
-import { products } from "./products.js";
 
 function Cart() {
     const cart = {
