@@ -1,20 +1,20 @@
 class Cart {
-    cartItems;
+    #cartItems = [];
     loadFromStorage() {
-        this.cartItems = JSON.parse(localStorage.getItem('cart-class'));
+        this.#cartItems = JSON.parse(localStorage.getItem('cart-class'));
     }
 
     saveToStorage() {
-        localStorage.setItem('cart-class', JSON.stringify(this.cartItems));
+        localStorage.setItem('cart-class', JSON.stringify(this.#cartItems));
     }
 
     addToCart(productId) {
         let matchingItem;
-        this.cartItems.forEach((item) => {
-            if (productId === item.productId) {
-                matchingItem = item;
-            }
-        });
+        // this.#cartItems.forEach((item) => {
+        //     if (productId === item.productId) {
+        //         matchingItem = item;
+        //     }
+        // });
 
         const selectedQuantity = document.querySelector(`.js-quantity-${productId}`);
 
@@ -24,7 +24,7 @@ class Cart {
             matchingItem.quantity += cartQuantity;
         }
         else {
-            this.cartItems.push({
+            this.#cartItems.push({
                 productId: productId,
                 quantity: 1,
                 deliveryOptionId: '1',
@@ -41,16 +41,16 @@ class Cart {
                 newCart.push(cartItem);
             }
         });
-        this.cartItems = newCart;
+        this.#cartItems = newCart;
         this.saveToStorage();
     }
 
     itemCount() {
         let totalQuantity = 0;
-        this.cartItems.forEach((item) => {
+        this.#cartItems.forEach((item) => {
             totalQuantity = item.quantity;
         });
-        if (!this.cartItems.length) {
+        if (!this.#cartItems.length) {
             return 0;
         }
         return totalQuantity;
@@ -61,7 +61,5 @@ const cart = new Cart();
 cart.addToCart('15b6fc6f-327a-4ec4-896f-486349e85a3d');
 cart.saveToStorage();
 cart.loadFromStorage();
-
-
 console.log('cart :>> ', cart.cartItems);
 
