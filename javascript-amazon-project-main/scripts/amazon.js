@@ -41,6 +41,7 @@ products.forEach(
             <option value="10">10</option>
           </select>
         </div>
+        ${product.extractInfoHTML()}
 
         <div class="product-spacer"></div>
 
