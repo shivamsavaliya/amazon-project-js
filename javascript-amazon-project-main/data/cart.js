@@ -55,3 +55,14 @@ export function itemCount() {
     }
     return totalQuantity;
 }
+export function loadCart(fun) {
+    const req = new XMLHttpRequest();
+
+    req.addEventListener('load', () => {
+        console.log(req.response);
+        fun();
+    });
+
+    req.open('GET', 'https://supersimplebackend.dev/cart');
+    req.send();
+}
