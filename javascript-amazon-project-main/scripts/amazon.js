@@ -3,13 +3,17 @@ import { loadProductsFetch, products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
 // loadProducts(renderProductsGrid);
-loadProductsFetch(() => {
-  console.log('2 :>> ');
-  resolve();
-}).then(() => {
-  renderProductsGrid();
-});
 
+// loadProductsFetch(() => {
+//   resolve();
+// }).then(() => {
+//   renderProductsGrid();
+// });
+async function loadProducts() {
+  await loadProductsFetch();
+  renderProductsGrid();
+}
+loadProducts();
 
 function renderProductsGrid() {
   let productHTML = '';
