@@ -39,10 +39,25 @@ export function renderPayment() {
               <div class="payment-summary-money">$52.51</div>
             </div>
     
-            <button class="place-order-button button-primary">
+            <button class="place-order-button button-primary js-place-order">
               Place your order
             </button>
     `;
 
   document.querySelector('.js-payment-summary').innerHTML = paymentSummary;
+
+  document.querySelector('.js-place-order').addEventListener('click', async () => {
+    const response = await fetch('https://supersimplebackend.dev/orders', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        cart: cart
+      })
+    });
+    const order = await response.json()
+    console.log('order :>> ', order);
+    window.location.href = 'orders.html';
+  });
 }

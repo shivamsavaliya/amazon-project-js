@@ -706,6 +706,7 @@ export let products = [];
 
 export function loadProductsFetch() {
   const promise = fetch('https://supersimplebackend.dev/products').then((res) => {
+
     return res.json();
   }).then((data) => {
     products = data.map((productDetails) => {
@@ -714,7 +715,10 @@ export function loadProductsFetch() {
       }
       return new Product(productDetails);
     });
+  }).catch(() => {
+    console.log('errorrrrrr!!! ');
   });
+
   return promise;
 }
 
